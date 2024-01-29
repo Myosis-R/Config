@@ -1,0 +1,5 @@
+include "%L"
+
+<Multi_key> \<C> \<=> : "€"
+<Multi_key> \<o> \<e> : "œ"
+<Multi_key> \<l> \<l> : "o"

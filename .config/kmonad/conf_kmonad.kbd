@@ -1,0 +1,98 @@
+(defcfg
+  input  (device-file "/dev/input/by-path/platform-i8042-serio-0-event-kbd")
+  output (uinput-sink "kmonad_output_kb" "sleep 1; xset r rate 230 70; sleep 1;setxkbmap -option compose:ralt")
+  cmp-seq ralt
+  cmp-seq-delay 5
+  fallthrough true
+)
+
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  pause del
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft up
+  lctl  lalt           spc            nubs ralt lmet  rctl left down rght
+)
+
+(deflayer main
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  pause del
+  @test 1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  b    @é    p    o    @è   ^    v    d    l    j    z    w    @ç
+  caps a    u     i    e   @NUM  c    t    s    r    n    m    ret
+  @LSFT à    y    x    @SYS    k    @la1    q    g    h    f    rsft up
+  lctl  lalt           @COD               @ê @RALT lmet rctl left down rght
+)
+
+(deflayer maj
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  pause del
+   _   _    _    _    _    _    _    _    _    _    _    _    _    bspc
+  tab  B    @É   P    O    @È   !    V    D    L    J    Z    W    @Ç
+  caps A    U    I    E    ;    C    T    S    R    N    M    ret
+  _    À    Y    X    :    K    ?    Q    G    H    F    rsft up
+  lctl  lalt           spc                @Ê @RALT lmet  rctl left down rght 
+)
+
+(deflayer coding
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  pause del
+   _   _    _    _    _    _     _    _    _    _    _    _    _    bspc
+  tab  <    >    €    &    $     #    +    -    ^    %    _    _    _
+  caps \(  \)    [    ]   @la2   @    /    \    *    =    _    ret
+  _    “    ”    {    }    ~     &    |    \_   °    ·    rsft up
+  lctl  lalt           _                _ @RALT lmet  rctl left down rght 
+)
+
+(deflayer system
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  pause del
+   _   _    _    _     _     _    _    _    _    _    _    _    _    bspc
+  tab  C-a  C-f  C-o  C-s   C-q   esc  home end  pgup pgdn   _    _    _
+  caps C-z  C-y  C-c  C-v   C-x   esc  left rght up   down   _    ret
+  _    _    _    _    _     _     _  _    _    _   _    rsft up
+  lctl  lalt           spc                _ @RALT lmet  rctl left down rght 
+)
+
+(deflayer numbers
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  pause del
+   _   _    _    _    \(    \)    _    _    _    _    _    _    _    bspc
+  tab  <    >    €    &     $     !    7    8    9    %    _    _    _
+  caps \(  \)    [    ]     _     @    4    5    6    0    _    ret
+  _    “    ”    {    }    ~      &    1    2    3    ·    rsft up
+  lctl  lalt           spc                _ @RALT lmet  rctl left down rght 
+)
+
+(deflayer altgr
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  pause del
+   _   _    _    _     _    _     _    _    _    _    _    _    _    bspc
+  tab  _    _    _    @œ    _     _    _    _    _    _    _    _    _
+  caps _    _    _    @€    _     _    _    _    _    _    _    ret
+  _    _    _    _     _    _     _    _    _    _    _    rsft up
+  lctl  lalt           spc               _  _  lmet  rctl left down rght 
+)
+
+(defalias
+  LSFT (layer-toggle maj)
+  SYS (tap-next . (layer-toggle system))
+  COD (tap-next spc (layer-toggle coding))
+  NUM (tap-next , (layer-toggle numbers))
+  RALT (tap-next : (layer-toggle altgr))
+)
+
+(defalias
+  é (tap-macro ' e)
+  É (tap-macro ' E)
+  è (tap-macro grv e)
+  È (tap-macro grv E)
+  ê (tap-macro ^ e)
+  Ê (tap-macro ^ E)
+  la1 #(' spc)
+  la2 #(" spc)
+  ç #(RA-, c)
+  Ç #(RA-, C)
+)
+
+(defalias 
+    € #(ralt C =) 
+    œ #(ralt o e)
+    test #(ralt l l)
+
+)
