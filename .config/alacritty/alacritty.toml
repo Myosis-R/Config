@@ -1,0 +1,25 @@
+[window]
+
+title = "Terminal"
+dynamic_title = false
+startup_mode = "Windowed"
+opacity = 0.9
+padding.x = 10
+padding.y = 10
+decorations = "Full"
+decorations_theme_variant = "Light" # "Dark"
+
+[font]
+
+size = 15.0
+
+[scrolling]
+
+history = 5000
+multiplier = 3
+
+[selection]
+
+save_to_clipboard = true
+
+
