@@ -1,0 +1,201 @@
+(defcfg
+  input  (device-file "/dev/input/by-path/platform-i8042-serio-0-event-kbd")
+  output (uinput-sink "kmonad_output_kb")
+  fallthrough true
+)
+
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  pause del
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft up
+  lctl  lalt           spc            nubs ralt lmet  rctl left down rght
+)
+
+(deflayer main
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  pause del
+  lalt  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  @BP_B    @BP_EACU @BP_P    @BP_O    @BP_EGRV @BP_DCIR @BP_V    @BP_D    @BP_L    @BP_J    @DKS  @BP_W    @BP_CCED
+  caps @BP_A    @BP_U    @BP_I    @BP_E    @NUM     @BP_C    @BP_T    @BP_S    @BP_R    @BP_N    @BP_M    ret
+  lsft @BP_AGRV @BP_Y    @BP_X    @BP_DOT  @BP_K    @BP_QUOT @BP_Q    @BP_G    @BP_H    @BP_F    rsft    up
+  lctl  @SYS    spc             @BP_ECIR ralt lmet  rctl                          left down rght
+)
+
+(deflayer system
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  pause del
+   _   _    _    _     _     _    _    _    _    _    _    _    _    bspc
+  tab  C-@BP_A  C-@BP_F  C-@BP_O  C-@BP_S   C-@BP_Q   esc  home end  pgup pgdn   _    _    _
+  caps C-@BP_DCIR  C-@BP_Y  C-@BP_C  C-@BP_V   C-@BP_X   esc  left rght up   down   _    ret
+  _    _    _  _  esc   _     ret      _    _    _   _    rsft up
+  lctl  _           bspc                _ del lmet  rctl left down rght 
+)
+
+(deflayer numbers
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  pause del
+   _   _    _    _    _    _     _    _    _    _    _    _    _    bspc
+  tab  @BP_LABK  @BP_RABK  @BP_LCBR  @BP_RCBR  @BP_DLR   @BP_HASH kp7 kp8  kp9  @BP_PERC    _    _    _
+  caps @BP_LPRN  @BP_RPRN  @BP_LBRC  @BP_RBRC  _ @BP_COMM  kp4  kp5  kp6  kp0    _    ret
+  _    @BP_LDQU  @BP_RDQU    _    _    _              @BP_DOT  kp1  kp2 kp3   _  rsft up
+  lctl  lalt           _                _ ralt lmet  rctl left down rght 
+)
+
+
+;; bepo alias
+(defalias
+BP_DLR #(grv);; $
+BP_DQUO #(1) ;; "
+BP_LDAQ #(2) ;; «
+BP_RDAQ #(3) ;; »
+BP_LPRN #(4) ;; (
+BP_RPRN #(5) ;; )
+BP_AT #(6)   ;; @
+BP_PLUS #(7) ;; +
+BP_MINS #(8) ;; -
+BP_SLSH #(9) ;; /
+BP_ASTR #(0) ;; *
+BP_EQL #(-)  ;; =
+BP_PERC #(=) ;; %
+BP_B #(q)    ;; B
+BP_EACU #(w) ;; É
+BP_P #(e)    ;; P
+BP_O #(r)    ;; O
+BP_EGRV #(t) ;; È
+BP_DCIR #(y) ;; ^ (dead)
+BP_V #(u)    ;; V
+BP_D #(i)    ;; D
+BP_L #(o)    ;; L
+BP_J #(p)    ;; J
+BP_Z #([)    ;; Z
+BP_W #(])    ;; W
+BP_A #(a)    ;; A
+BP_U #(s)    ;; U
+BP_I #(d)    ;; I
+BP_E #(f)    ;; E
+BP_COMM #(g) ;; ,
+BP_C #(h)    ;; C
+BP_T #(j)    ;; T
+BP_S #(k)    ;; S
+BP_R #(l)    ;; R
+BP_N #(;)    ;; N
+BP_M #(')    ;; M
+BP_CCED #(\\) ;; Ç
+BP_ECIR #(nubs) ;; Ê
+BP_AGRV #(z) ;; À
+BP_Y #(x)    ;; Y
+BP_X #(c)    ;; X
+BP_DOT #(v)  ;; .
+BP_K #(b)    ;; K
+BP_QUOT #(n) ;; '
+BP_Q #(m)    ;; Q
+BP_G #(,)    ;; G
+BP_H #(.)    ;; H
+BP_F #(/)    ;; F
+)
+
+;; bepo alias shift ralt
+(defalias
+BP_HASH #(S-@BP_DLR)  ;; #
+BP_1 #(S-@BP_DQUO) ;; 1
+BP_2 #(S-@BP_LDAQ) ;; 2
+BP_3 #(S-@BP_RDAQ) ;; 3
+BP_4 #(S-@BP_LPRN) ;; 4
+BP_5 #(S-@BP_RPRN) ;; 5
+BP_6 #(S-@BP_AT) ;; 6
+BP_7 #(S-@BP_PLUS) ;; 7
+BP_8 #(S-@BP_MINS) ;; 8
+BP_9 #(S-@BP_SLSH) ;; 9
+BP_0 #(S-@BP_ASTR) ;; 0
+BP_DEG #(S-@BP_EQL)  ;; °
+BP_GRV #(S-@BP_PERC) ;; `
+BP_EXLM #(S-@BP_DCIR) ;; !
+BP_SCLN #(S-@BP_COMM) ;; ;
+BP_COLN #(S-@BP_DOT)  ;; :
+BP_QUES #(S-@BP_QUOT) ;; ?
+BP_NBSP #(S-spc)  ;; (non-breaking space)
+BP_NDSH #(RA-@BP_DLR)  ;; –
+BP_MDSH #(RA-@BP_DQUO) ;; —
+BP_LABK #(RA-@BP_LDAQ) ;; <
+BP_RABK #(RA-@BP_RDAQ) ;; >
+BP_LBRC #(RA-@BP_LPRN) ;; [
+BP_RBRC #(RA-@BP_RPRN) ;; ]
+BP_CIRC #(RA-@BP_AT) ;; ^
+BP_PLMN #(RA-@BP_PLUS) ;; ±
+BP_MMNS #(RA-@BP_MINS) ;; −
+BP_DIV #(RA-@BP_SLSH) ;; ÷
+BP_MUL #(RA-@BP_ASTR) ;; ×
+BP_NEQL #(RA-@BP_EQL)  ;; ≠
+BP_PERM #(RA-@BP_PERC) ;; ‰
+BP_PIPE #(RA-@BP_B);; |
+BP_ACUT #(RA-@BP_EACU) ;; ´ (dead)
+BP_AMPR #(RA-@BP_P)    ;; &
+BP_OE #(RA-@BP_O)    ;; Œ
+BP_DGRV #(RA-@BP_EGRV) ;; ` (dead)
+BP_IEXL #(RA-@BP_DCIR) ;; ¡
+BP_CARN #(RA-@BP_V)    ;; ˇ (dead)
+BP_ETH #(RA-@BP_D)    ;; Ð
+BP_DSLS #(RA-@BP_L)    ;; / (dead)
+BP_IJ #(RA-@BP_J)    ;; Ĳ
+BP_SCHW #(RA-@BP_Z)    ;; Ə
+BP_BREV #(RA-@BP_W)    ;; ˘ (dead)
+BP_AE #(RA-@BP_A)    ;; Æ
+BP_UGRV #(RA-@BP_U)    ;; Ù
+BP_DIAE #(RA-@BP_I)    ;; ¨ (dead)
+BP_EURO #(RA-@BP_E)    ;; €
+BP_COPY #(RA-@BP_C)    ;; ©
+BP_THRN #(RA-@BP_T)    ;; Þ
+BP_SS #(RA-@BP_S)    ;; ẞ
+BP_REGD #(RA-@BP_R)    ;; ®
+BP_DTIL #(RA-@BP_N)    ;; ~ (dead)
+BP_MACR #(RA-@BP_M)    ;; ¯ (dead)
+BP_CEDL #(RA-@BP_CCED) ;; ¸ (dead)
+BP_BSLS #(RA-@BP_AGRV) ;; (backslash)
+BP_LCBR #(RA-@BP_Y)    ;; {
+BP_RCBR #(RA-@BP_X)    ;; }
+BP_ELLP #(RA-@BP_DOT)  ;; …
+BP_TILD #(RA-@BP_K)    ;; ~
+BP_IQUE #(RA-@BP_QUES) ;; ¿
+BP_RNGA #(RA-@BP_Q)    ;; ° (dead)
+BP_DGRK #(RA-@BP_G)    ;; µ (dead Greek key)
+BP_DAGG #(RA-@BP_H)    ;; †
+BP_OGON #(RA-@BP_F)    ;; ˛ (dead)
+BP_UNDS #(RA-spc)  ;; _
+BP_PARA #(S-RA-@BP_DLR)  ;; ¶
+BP_DLQU #(S-RA-@BP_DQUO) ;; „
+BP_LDQU #(S-RA-@BP_LDAQ) ;; “
+BP_RDQU #(S-RA-@BP_RDAQ) ;; ”
+BP_LEQL #(S-RA-@BP_LPRN) ;; ≤
+BP_GEQL #(S-RA-@BP_RPRN) ;; ≥
+BP_NOT #(S-RA-@BP_PLUS) ;; ¬
+BP_QRTR #(S-RA-@BP_MINS) ;; ¼
+BP_HALF #(S-RA-@BP_SLSH) ;; ½
+BP_TQTR #(S-RA-@BP_ASTR) ;; ¾
+BP_PRIM #(S-RA-@BP_EQL)  ;; ′
+BP_DPRM #(S-RA-@BP_PERC) ;; ″
+BP_BRKP #(S-RA-@BP_B)    ;; ¦
+BP_DACU #(S-RA-@BP_EACU) ;; ˝ (dead)
+BP_SECT #(S-RA-@BP_P)    ;; §
+BP_DOTA #(S-RA-@BP_I)    ;; ˙ (dead)
+BP_CURR #(S-RA-@BP_E)    ;; ¤ (dead)
+BP_HORN #(S-RA-@BP_COMM) ;; ̛ (dead)
+BP_LNGS #(S-RA-@BP_C)    ;; ſ
+BP_TM #(S-RA-@BP_R)    ;; ™
+BP_MORD #(S-RA-@BP_M)    ;; º
+BP_DCMM #(S-RA-@BP_CCED) ;; , (dead)
+BP_LSQU #(S-RA-@BP_Y)    ;; ‘
+BP_RSQU #(S-RA-@BP_X)    ;; ’
+BP_MDDT #(S-RA-@BP_DOT)  ;; ·
+BP_KEYB #(S-RA-@BP_K)    ;; ⌨
+BP_HOKA #(S-RA-@BP_QUOT) ;; ̉ (dead)
+BP_DOTB #(S-RA-@BP_Q)    ;; ̣ (dead)
+BP_DDAG #(S-RA-@BP_H)    ;; ‡
+BP_FORD #(S-RA-@BP_F)    ;; ª
+BP_NNBS #(S-RA-spc)  ;; (narrow non-breaking space)
+)
+
+;; layers !!!! no alias in layers 
+(defalias
+  DKS (sticky-key 500 lsft)
+  SYS (tap-hold-next-release 1000 ret (layer-toggle system))
+  NUM (tap-hold-next-release 1000 g (layer-toggle numbers))
+)
